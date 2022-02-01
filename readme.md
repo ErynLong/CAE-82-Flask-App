@@ -11,8 +11,8 @@ To see the versions at the end of its respective day:
 ## To clone this repository:
 **From the CLI**
 * Navigate into the folder you where you want to place this application
-* `git clone https://github.com/CrtlAltElite/cae74-first-flask-app.git`
-* `cd cae74-first-flask-app`
+* `https://github.com/CrtlAltElite/CAE-82-Flask-App.git`
+* `cd CAE-82-Flask-App`
 * now you are inside the project
   * ##### To view a specific branches
     * `git checkout BRANCH_NAME` [replace BRANCH_NAME with the name of the branch you want to be on]
