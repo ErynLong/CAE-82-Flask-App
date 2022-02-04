@@ -1,36 +1,22 @@
-from app import app
-from .forms import LoginForm
+from .import bp as main
 from flask import render_template, request
 import requests
+from flask_login import  login_required
 
-
-@app.route('/', methods=['GET'])
+@main.route('/', methods=['GET'])
+@login_required
 def index():
     return render_template('index.html.j2')
 
-@app.route('/login', methods=['GET','POST'])
-def login():
-    form = LoginForm()
-    if request.method=='POST' and form.validate_on_submit():
-        #We will do the login Stuff
-        email = request.form.get('email').lower()
-        password = request.form.get('password')
-        if email in app.config.get("REGISTERED_USERS") and \
-            password == app.config.get("REGISTERED_USERS").get(email).get('password'):
-            return f"Login success Welcome {app.config.get('REGISTERED_USERS').get(email).get('name')}"
-        error_string = "Invalid Email Password Combo"
-        return render_template('login.html.j2',form=form, error = error_string)   
-
-    return render_template('login.html.j2',form=form)
-
-
-@app.route('/students', methods=['GET'])
+@main.route('/students', methods=['GET'])
+@login_required
 def students():
     my_students = ['Caleb', 'Kristen', 'Eryn', 'Zak', 'David']
                                             #  Name in Jinja = name in python
     return render_template('students.html.j2', students = my_students)
 
-@app.route('/ergast', methods = ['GET', 'POST'])
+@main.route('/ergast', methods = ['GET', 'POST'])
+@login_required
 def ergast():
     if request.method == 'POST':
         #contact the api and get the info for the year and round from the form
