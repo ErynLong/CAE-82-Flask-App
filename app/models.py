@@ -96,6 +96,7 @@ class Post(db.Model):
 
     def edit(self, new_body):
         self.body = new_body
+        self.save()
 
     def delete(self):
         db.session.delete(self)
