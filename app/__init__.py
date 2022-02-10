@@ -26,9 +26,7 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
 
     # This is where you will be sent if you are not logged
-    # into FIXME trying to go to a login required page
-    # TODO:!!!!!!
-    login.login_view='auth.login' #NEED TO FIX THIS --> auth.login
+    login.login_view='auth.login' 
     login.login_message = 'Log your punk *** into the website first'
     login.login_message_category='warning'
 
@@ -42,6 +40,9 @@ def create_app(config_class=Config):
 
     from .blueprints.social import bp as social_bp
     app.register_blueprint(social_bp)
+
+    from .blueprints.api import bp as api_bp
+    app.register_blueprint(api_bp)
 
     from .import exmodel
     
