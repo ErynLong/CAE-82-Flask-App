@@ -47,3 +47,4 @@ def create_app(config_class=Config):
     from .import exmodel
     
     return app
+
