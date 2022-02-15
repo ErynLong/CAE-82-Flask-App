@@ -1,3 +1,6 @@
+from unicodedata import name
+
+from sqlalchemy import desc
 from . import bp as api
 from app.blueprints.auth.auth import token_auth
 from flask import request, make_response, g, abort
@@ -96,3 +99,44 @@ def get_items_by_cat(id):
     all_items_in_cat = [item.to_dict() for item in cat.products]
     return make_response({"items":all_items_in_cat}, 200)
 
+# Create a new Item
+# {
+#     "name":"string",
+#     "desc":"string",
+#     "price":"float",
+#     "img":"string",
+#     "category_id":"int"
+# }
+@api.post("/item")
+@token_auth.login_required()
+@require_admin
+def post_item():
+    item_dict = request.get_json()
+    if not all(key in item_dict for key in ('name','desc','price','img','category_id')):
+        abort(400)
+    item = Item()
+    item.from_dict(item_dict)
+    item.save()
+    return make_response(f"Item {item.name} was created with an id {item.id}",200)
+
+@api.put('/item/<int:id>')
+@token_auth.login_required()
+@require_admin
+def put_item(id):
+    item_dict = request.get_json()
+    item = Item.query.get(id)
+    if not item:
+        abort(404)
+    item.from_dict(item_dict)
+    item.save()
+    return make_response(f"Item {item.name} with ID {item.id} has been updated", 200)
+
+@api.delete('/item/<int:id>')
+@token_auth.login_required()
+@require_admin
+def delete_item(id):
+    item_to_delete = Item.query.get(id)
+    if not item_to_delete:
+        abort(404)
+    item_to_delete.delete()
+    return make_response(f"Item with id {id} has been deleted",200)
