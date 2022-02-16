@@ -44,7 +44,7 @@ def create_app(config_class=Config):
     from .blueprints.api import bp as api_bp
     app.register_blueprint(api_bp)
 
-    from .import exmodel
+    from .import exmodel, sql_demo_models
     
     return app
 

@@ -1,5 +1,3 @@
-from unicodedata import name
-
 from sqlalchemy import desc
 from . import bp as api
 from app.blueprints.auth.auth import token_auth
