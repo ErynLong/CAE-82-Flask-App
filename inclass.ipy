@@ -1,0 +1,113 @@
+# coding: utf-8
+wade = Person(email="wade.wade.com", name="Wade", password="1234", bio="Hey I am Wade")
+from app.sql_demo_models import *
+wade = Person(email="wade.wade.com", name="Wade", password="1234", bio="Hey I am Wade")
+wade.name
+wade.votes
+wade.votes.all()
+wade.videos.all()
+wade.video_voted_on.all()
+wade.id
+wade.save()
+kristina=Person(email="ktina@2cool.com",name="Kristina", password="1234", bio="I love care bears and My little pony")
+kristina.save()
+v1 = Video('Hold My Beer',thumbnail_url="http://myimg.png",asdflkj;ashfasg)
+wade.id
+v1 = Video('Hold My Beer',thumbnail_url="http://myimg.png",3)
+v1 = Video('Hold My Beer',thumbnail_url="http://myimg.png",user_id=3)
+v1 = Video(title='Hold My Beer',thumbnail_url="http://myimg.png",user_id=3)
+v1.save()
+v1.__dict__
+v1.__dict__()
+v1.__dict__
+v1.vote_id
+v1.video_id
+Video.query.get(3)
+Video.query.filter_by(video_id = 3 )
+Video.query.filter_by(video_id = 3 ).all()
+wade.videos
+wade.videos.all()
+v1 = Video(title='Don\'t Smell That',thumbnail_url="http://myimg.png")
+v1.save()
+wade.videos.append(v1)
+wade.videos.all()
+wade.videos[0].name
+wade.videos[0].title
+for video in wade.videos:
+    print(video.title)
+    print(video.video_id)
+    
+v3 = Video(title='Rainbows and Unicorns',thumbnail_url="http://myimg.png")
+kristina
+kristina.videos.append(v3)
+kristina.videos.all()
+kristina.save()
+wade.save()
+v3.save()
+v3.id
+v3.vote_id
+v3.video_id
+vote1 = Vote(video_id = 5, user_id = 3, vote=True)
+vote.save()
+vote1.save()
+wade.video_voted_on.all()
+wade.votes
+wade.votes.all()
+kristina.videos.all()
+kristina.videos.all()[0]
+kristina.videos.all()[0].votes
+kristina.videos.all()[0].votes.all()
+kristina.videos.all()[0].votes.voter.all()
+wade.videos
+wade.videos.all()
+wade.videos[0].creator.all()
+wade.videos[0].creator
+wade.videos[0].creator.name
+wade.videos[0].creator.videos
+wade.videos[0].creator.videos.all()
+User.query.filter(password='1234')
+Person.query.filter(password='1234').all()
+Person.query.filter_by(password='1234').all()
+Person.query.filter_by(password='1234', name="Wade").all()
+from sqlalchemy import and_, or_
+Person.query.filter_by(and(password='1234', name="Wade")).all()
+Person.query.filter_by(and_(password='1234', name="Wade")).all()
+Person.query.filter_by(password='1234', name="Wade").all()
+Person.query.filter(password=='1234', name=="Wade").all()
+Person.query.filter(Person.password=='1234', Person.name=="Wade").all()
+Person.query.filter(Person.password>'1234', Person.name=="Wade").all()
+Person.query.filter(Person.password>='1234', Person.name=="Wade").all()
+wade.votes.all()
+Person.query.join(Vote, Vote.user_id == Person.id).all()
+Person.query.join(Vote, Vote.user_id == wade.id).all()
+Person.query.join(Vote, Vote.user_id == Person.id).filter_by(id=wade.id).all()
+Person.query.join(Vote, Vote.user_id == Person.id).filter_by(Person.id=wade.id).all()
+Person.query.join(Vote, Vote.user_id == Person.id).filter(Person.id==wade.id).all()
+Person.query.join(Vote, Vote.user_id == Person.id).filter(Person.id==wade.id).add_columns(Vote.vote, Vote.created_on).all()
+l=Person.query.join(Vote, Vote.user_id == Person.id).filter(Person.id==wade.id).add_columns(Vote.vote, Vote.created_on).all()
+l[0]
+l[0][0]
+l[0][0].name
+l[0][1]
+l[0][2]
+l=Person.query.join(Vote, Vote.user_id == Person.id).filter(Person.id==wade.id).with_entities(Vote.vote, Vote.created_on).all()
+l
+l=Person.query.join(Vote, Vote.user_id == Person.id).filter(Person.id==wade.id).with_entities(Person.name, Vote.vote, Vote.created_on).all()
+l
+db.query(Person, Vote).join(Person, Person.id==Vote.user_id).all()
+db.session.query(Person, Vote).join(Person, Person.id==Vote.user_id).all()
+db.session.query(Person, Vote).join(Person, Person.id==Vote.user_id).filter(name=="Wade").all()
+db.session.query(Person, Vote).join(Person, Person.id==Vote.user_id).filter(Person.name=="Wade").all()
+db.session.query(Person, Vote).outerjoin(Person, Person.id==Vote.user_id).filter(Person.name=="Wade").all()
+l=Person.query.join(Vote, Vote.user_id == Person.id).filter(Person.id==wade.id).with_entities(Person.name, Vote.vote, Vote.created_on).all()
+l
+l=Person.query.outerjoin(Vote, Vote.user_id == Person.id).filter(Person.id==wade.id).with_entities(Person.name, Vote.vote, Vote.created_on).all()
+l
+Person.query.outerjoin(Vote, Vote.user_id == Person.id).with_entities(Person.name, Vote.vote).all()
+Person.query.join(Vote, Vote.user_id == Person.id).with_entities(Person.name, Vote.vote).all()
+Person.query.join(Vote, Vote.user_id == Person.id).join(Video, video.video_id = Vote.video_id).with_entities(Person.name, Vote.vote)
+Person.query.join(Vote, Vote.user_id == Person.id).join(Video, video.video_id == Vote.video_id).with_entities(Person.name, Vote.vote)
+Person.query.join(Vote, Vote.user_id == Person.id).join(Video, video.video_id == Vote.video_id).with_entities(Person.name, Vote.vote).all()
+Person.query.join(Vote, Vote.user_id == Person.id).join(Video, Video.video_id==Vote.video_id).with_entities(Person.name, Vote.vote, Video.title).all()
+db.session.query(Person, Vote, Video).join(Person, Person.id==Vote.user_id).join(Video, Video.video_id ==Video.video_id).all()
+save -r inclass 1-999999

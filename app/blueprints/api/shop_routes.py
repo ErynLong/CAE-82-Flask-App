@@ -1,5 +1,3 @@
-from unicodedata import name
-
 from sqlalchemy import desc
 from . import bp as api
 from app.blueprints.auth.auth import token_auth
@@ -18,7 +16,7 @@ from helpers import require_admin
 # Get all the Categories
 
 @api.get('/category')
-@token_auth.login_required()
+# @token_auth.login_required()
 def get_category():
     cats = Category.query.all()   
     cats_dicts = [cat.to_dict() for cat in cats]
@@ -74,7 +72,7 @@ def delete_category(id):
 
 # Get All the items from the Shop
 @api.get('/item')
-@token_auth.login_required()
+# @token_auth.login_required()
 def get_items():
     items = Item.query.all()   
     items_dicts = [item.to_dict() for item in items]
@@ -82,7 +80,7 @@ def get_items():
 
 # Get an item by its id
 @api.get('/item/<int:id>')
-@token_auth.login_required()
+# @token_auth.login_required()
 def get_item(id):
     item = Item.query.get(id)
     if not item:
@@ -91,7 +89,7 @@ def get_item(id):
 
 # Get all items in a Category (by cat id)
 @api.get('/item/category/<int:id>')
-@token_auth.login_required()
+# @token_auth.login_required()
 def get_items_by_cat(id):
     cat = Category.query.get(id)
     if not cat:
