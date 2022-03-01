@@ -5,13 +5,18 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_moment import Moment
-
+from flask_cors import CORS
+import os
 # init my Login Manager
 login = LoginManager()
 # Do inits for database stuff
 db = SQLAlchemy()
 migrate = Migrate()
 moment = Moment()
+
+# NEW
+if os.environ.get('FLASK_ENV') == 'development':
+    cors= CORS()
 
 def create_app(config_class=Config):
     #init the app
@@ -24,6 +29,10 @@ def create_app(config_class=Config):
     login.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)
+
+    #NEW
+    if os.environ.get('FLASK_ENV') == 'development':
+        cors.init_app(app)
 
     # This is where you will be sent if you are not logged
     login.login_view='auth.login' 

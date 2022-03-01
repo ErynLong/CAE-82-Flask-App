@@ -104,6 +104,19 @@ class User(UserMixin, db.Model):
         self.password = self.hash_password(data['password'])
         self.icon = data['icon']
 
+
+    ### NEW
+    def to_dict(self):
+        return {
+            "first_name":self.first_name,
+            "last_name":self.last_name,
+            "email":self.email,
+            "icon":self.icon,
+            "created_on":self.created_on,
+            "is_admin":self.is_admin,
+            "token":self.token
+        }
+
     # saves the user to the database
     def save(self):
         db.session.add(self) # add the user to the db session
