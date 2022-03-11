@@ -4,6 +4,50 @@ from app.blueprints.auth.auth import token_auth
 from flask import request, make_response, g, abort
 from .models import *
 from helpers import require_admin
+import stripe
+import os
+from collections import Counter
+
+
+# This is your test secret API key.
+
+stripe.api_key = os.environ.get('STRIPE_SK')
+YOUR_DOMAIN = os.environ.get('HOST_ADDRESS')
+
+@api.route('/create-checkout-session', methods=['POST'])
+@token_auth.login_required()
+def create_checkout_session():
+    data=request.get_json()
+    cart= data.get('cart')
+    user=data.get('user')
+    line_items=[]
+    filtered_ids = map(lambda item: item['id'], cart)
+    item_counts = Counter(filtered_ids)
+    
+    for item in cart:
+        if item['id'] in item_counts:
+            line_items.append({
+                'name':item['name'],
+                'amount':int(float(item['price'])*100),
+                'quantity':item_counts[item['id']],
+                'currency':'USD',
+            })
+            del item_counts[item['id']]
+
+    # try:
+    checkout_session = stripe.checkout.Session.create(
+        line_items=line_items,
+        mode='payment',
+        success_url=YOUR_DOMAIN + '/checkoutsuccess',
+        cancel_url=YOUR_DOMAIN + '/cart/true'
+    )
+    
+    # except Exception as e:
+    #     return str(e)
+
+    return make_response({"url":checkout_session.url},200)
+
+
 
 
 ############
@@ -86,7 +130,11 @@ def get_item(id):
     if not item:
         abort(404)
     return make_response(item.to_dict(),200)
+{
+    "id":3,
+    "name":"name",
 
+}
 # Get all items in a Category (by cat id)
 @api.get('/item/category/<int:id>')
 # @token_auth.login_required()
