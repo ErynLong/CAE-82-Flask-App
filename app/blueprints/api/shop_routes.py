@@ -22,7 +22,6 @@ def create_checkout_session():
     user=data.get('user')
     line_items=[]
     filtered_ids = map(lambda item: item['id'], cart)
-    from collections import Counter
     item_counts = Counter(filtered_ids)
     
     for item in cart:
@@ -35,17 +34,18 @@ def create_checkout_session():
             })
             del item_counts[item['id']]
 
-    try:
-        checkout_session = stripe.checkout.Session.create(
-            line_items=line_items,
-            mode='payment',
-            success_url=YOUR_DOMAIN + 'checkoutsuccess',
-            cancel_url=YOUR_DOMAIN + 'cart/true'
-        )
-    except Exception as e:
-        return str(e)
+    # try:
+    checkout_session = stripe.checkout.Session.create(
+        line_items=line_items,
+        mode='payment',
+        success_url=YOUR_DOMAIN + '/checkoutsuccess',
+        cancel_url=YOUR_DOMAIN + '/cart/true'
+    )
+    
+    # except Exception as e:
+    #     return str(e)
 
-    return make_response({"url":checkout_session.url}, 303)
+    return make_response({"url":checkout_session.url},200)
 
 
 
