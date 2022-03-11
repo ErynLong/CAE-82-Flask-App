@@ -3,7 +3,7 @@ from flask import render_template, flash, redirect, url_for, request
 from app.models import User, Post
 from flask_login import login_required, current_user
 
-@social.route('/', methods=['GET', 'POST'])
+@social.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
     if request.method == 'POST':
