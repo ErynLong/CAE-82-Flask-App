@@ -29,7 +29,7 @@ export default function ChangeCartItemQuantity({item, qty, setQty}) {
         onChange={event=>handleChange(event, item)}
         >
             {range(qty+100).map(
-            (qtySel)=>qtySel<qty || qtySel<10 || qtySel%10===0 || qtySel%25===0 
+            (qtySel)=>qtySel<=qty || qtySel<10 || qtySel%10===0 || qtySel%25===0 
             ?
             <MenuItem key={qtySel} value={qtySel}>{qtySel}</MenuItem>
             :''
