@@ -1,6 +1,5 @@
 alembic==1.7.6
 backcall==0.2.0
-betterpath==0.2.2
 certifi==2021.10.8
 charset-normalizer==2.0.11
 click==8.0.3

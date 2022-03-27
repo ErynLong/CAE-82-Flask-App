@@ -16,9 +16,11 @@ class User(UserMixin, db.Model):
     last_name = db.Column(db.String(150))
     email = db.Column(db.String(150), index=True, unique=True)
     password = db.Column(db.String(200))
-    icon = db.Column(db.Integer)
+    # icon = db.Column(db.Integer)
     created_on = db.Column(db.DateTime, default = dt.utcnow)
-    posts = db.relationship('Post', backref='author', lazy="dynamic")
+    gratitudeposts = db.relationship('GratitudePost', backref='author', lazy="dynamic")
+    lyricsposts = db.relationship('LyricsPost', backref='author', lazy="dynamic")
+    promptsposts = db.relationship('PromptsPost', backref='author', lazy="dynamic")
     followed = db.relationship(
         'User',
         secondary = followers,
@@ -80,13 +82,31 @@ class User(UserMixin, db.Model):
             db.session.commit()
     
     # get all the post from the user I am following
-    def followed_posts(self):
+    def gratitude_followed_posts(self):
         #get posts for all the users I'm following
-        followed = Post.query.join(followers,(Post.user_id == followers.c.followed_id)).filter(followers.c.follower_id == self.id)
+        followed = GratitudePost.query.join(followers,(GratitudePost.user_id == followers.c.followed_id)).filter(followers.c.follower_id == self.id)
         #get all my own posts
-        self_posts = Post.query.filter_by(user_id=self.id)
+        self_posts = GratitudePost.query.filter_by(user_id=self.id)
         #add those together and then I will sort then my dates in descending order
-        all_posts = followed.union(self_posts).order_by(Post.date_created.desc())
+        all_posts = followed.union(self_posts).order_by(GratitudePost.date_created.desc())
+        return all_posts
+    
+    def lyrics_followed_posts(self):
+        #get posts for all the users I'm following
+        followed = LyricsPost.query.join(followers,(LyricsPost.user_id == followers.c.followed_id)).filter(followers.c.follower_id == self.id)
+        #get all my own posts
+        self_posts = LyricsPost.query.filter_by(user_id=self.id)
+        #add those together and then I will sort then my dates in descending order
+        all_posts = followed.union(self_posts).order_by(LyricsPost.date_created.desc())
+        return all_posts
+    
+    def prompts_followed_posts(self):
+        #get posts for all the users I'm following
+        followed = PromptsPost.query.join(followers,(PromptsPost.user_id == followers.c.followed_id)).filter(followers.c.follower_id == self.id)
+        #get all my own posts
+        self_posts = PromptsPost.query.filter_by(user_id=self.id)
+        #add those together and then I will sort then my dates in descending order
+        all_posts = followed.union(self_posts).order_by(PromptsPost.date_created.desc())
         return all_posts
 
     #salts and hashes our password to make it hard to steal
@@ -102,7 +122,7 @@ class User(UserMixin, db.Model):
         self.last_name = data['last_name']
         self.email = data['email']
         self.password = self.hash_password(data['password'])
-        self.icon = data['icon']
+        # self.icon = data['icon']
 
 
     ### NEW
@@ -111,7 +131,7 @@ class User(UserMixin, db.Model):
             "first_name":self.first_name,
             "last_name":self.last_name,
             "email":self.email,
-            "icon":self.icon,
+            # "icon":self.icon,
             "created_on":self.created_on,
             "is_admin":self.is_admin,
             "token":self.token
@@ -122,15 +142,15 @@ class User(UserMixin, db.Model):
         db.session.add(self) # add the user to the db session
         db.session.commit() #save everything in the session to the database
 
-    def get_icon_url(self):
-        return f'https://avatars.dicebear.com/api/big-smile/{self.icon}.svg'
+    # def get_icon_url(self):
+    #     return f'https://avatars.dicebear.com/api/big-smile/{self.icon}.svg'
 
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
     # SELECT * FROM user WHERE id = ???
 
-class Post(db.Model):
+class LyricsPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
     date_created = db.Column(db.DateTime, default=dt.utcnow)
@@ -163,3 +183,68 @@ class Post(db.Model):
         db.session.add(self) # add the user to the db session
         db.session.commit() #save everything in the session to the database
 
+class GratitudePost(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    date_created = db.Column(db.DateTime, default=dt.utcnow)
+    date_updated = db.Column(db.DateTime, onupdate=dt.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def __repr__(self):
+        return f'<Post: {self.id} | {self.body[:15]}>'
+
+
+    def to_dict(self):
+        return {
+            'id':self.id,
+            'body':self.body,
+            'date_created':self.date_created,
+            'date_updated':self.date_updated,
+            'user_id':self.user_id
+        }
+
+    def edit(self, new_body):
+        self.body = new_body
+        self.save()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    # saves the post to the database
+    def save(self):
+        db.session.add(self) # add the user to the db session
+        db.session.commit() #save everything in the session to the database
+
+class PromptsPost(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    date_created = db.Column(db.DateTime, default=dt.utcnow)
+    date_updated = db.Column(db.DateTime, onupdate=dt.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def __repr__(self):
+        return f'<Post: {self.id} | {self.body[:15]}>'
+
+
+    def to_dict(self):
+        return {
+            'id':self.id,
+            'body':self.body,
+            'date_created':self.date_created,
+            'date_updated':self.date_updated,
+            'user_id':self.user_id
+        }
+
+    def edit(self, new_body):
+        self.body = new_body
+        self.save()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    # saves the post to the database
+    def save(self):
+        db.session.add(self) # add the user to the db session
+        db.session.commit() #save everything in the session to the database

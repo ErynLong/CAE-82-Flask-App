@@ -1,0 +1,21 @@
+{% extends 'base.html.j2' %}
+{% block title %}
+Lyrics
+{% endblock %}
+
+{% block content %}
+    <h1>Writing Prompts</h1>
+    {{quotes}}
+
+    <form method="POST" action="{{url_for('main.prompts')}}">
+        <div class="mb-3">
+            <textarea class="form-control" placeholder="..." name="body" style="height: 100px;"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary"><i class="bi bi-send-fill"></i>&nbsp;Post</button>
+    </form>
+
+    <hr>
+    {% for post in posts %}
+        {% include './includes/_promptspost.html.j2' %}
+    {% endfor %}
+{% endblock %}

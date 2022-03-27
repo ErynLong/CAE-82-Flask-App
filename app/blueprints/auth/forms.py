@@ -1,9 +1,9 @@
 # Forms
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, RadioField
+from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import Email, DataRequired, EqualTo, ValidationError
 from app.models import User
-import random
+# import random
 from jinja2 import Markup
 
 class LoginForm(FlaskForm):
@@ -23,18 +23,18 @@ class RegisterForm(FlaskForm):
     submit = SubmitField('Register')
     
 # https://avatars.dicebear.com/api/big-smile/123.svg
-    r1=random.randint(1,1000)
-    r2=random.randint(1001,2000)
-    r3=random.randint(2001,3000)
-    r4=random.randint(3001,4000)
+    # r1=random.randint(1,1000)
+    # r2=random.randint(1001,2000)
+    # r3=random.randint(2001,3000)
+    # r4=random.randint(3001,4000)
 
-    r1_img=Markup(f'<img src="https://avatars.dicebear.com/api/big-smile/{r1}.svg" style="height:75px">')
-    r2_img=Markup(f'<img src="https://avatars.dicebear.com/api/big-smile/{r2}.svg" style="height:75px">')
-    r3_img=Markup(f'<img src="https://avatars.dicebear.com/api/big-smile/{r3}.svg" style="height:75px">')
-    r4_img=Markup(f'<img src="https://avatars.dicebear.com/api/big-smile/{r4}.svg" style="height:75px">')
+    # r1_img=Markup(f'<img src="https://avatars.dicebear.com/api/big-smile/{r1}.svg" style="height:75px">')
+    # r2_img=Markup(f'<img src="https://avatars.dicebear.com/api/big-smile/{r2}.svg" style="height:75px">')
+    # r3_img=Markup(f'<img src="https://avatars.dicebear.com/api/big-smile/{r3}.svg" style="height:75px">')
+    # r4_img=Markup(f'<img src="https://avatars.dicebear.com/api/big-smile/{r4}.svg" style="height:75px">')
 
-    icon = RadioField('Avatar', validators=[DataRequired()],
-            choices=[(r1, r1_img),(r2, r2_img),(r3,r3_img),(r4, r4_img)])
+    # icon = RadioField('Avatar', validators=[DataRequired()],
+    #         choices=[(r1, r1_img),(r2, r2_img),(r3,r3_img),(r4, r4_img)])
             
 
     # MUST BE LIKE THIS VALIDATE_FIELDNAME
@@ -56,16 +56,16 @@ class EditProfileForm(FlaskForm):
             message='Passwords must match')])
     submit = SubmitField('Update')
     
-    r1=random.randint(1,1000)
-    r2=random.randint(1001,2000)
-    r3=random.randint(2001,3000)
-    r4=random.randint(3001,4000)
+    # r1=random.randint(1,1000)
+    # r2=random.randint(1001,2000)
+    # r3=random.randint(2001,3000)
+    # r4=random.randint(3001,4000)
 
-    r1_img=Markup(f'<img src="https://avatars.dicebear.com/api/big-smile/{r1}.svg" style="height:75px">')
-    r2_img=Markup(f'<img src="https://avatars.dicebear.com/api/big-smile/{r2}.svg" style="height:75px">')
-    r3_img=Markup(f'<img src="https://avatars.dicebear.com/api/big-smile/{r3}.svg" style="height:75px">')
-    r4_img=Markup(f'<img src="https://avatars.dicebear.com/api/big-smile/{r4}.svg" style="height:75px">')
+    # r1_img=Markup(f'<img src="https://avatars.dicebear.com/api/big-smile/{r1}.svg" style="height:75px">')
+    # r2_img=Markup(f'<img src="https://avatars.dicebear.com/api/big-smile/{r2}.svg" style="height:75px">')
+    # r3_img=Markup(f'<img src="https://avatars.dicebear.com/api/big-smile/{r3}.svg" style="height:75px">')
+    # r4_img=Markup(f'<img src="https://avatars.dicebear.com/api/big-smile/{r4}.svg" style="height:75px">')
 
-    icon = RadioField('Avatar', validators=[DataRequired()],
-            choices=[(9000,"Don't Change"),(r1, r1_img),(r2, r2_img),(r3,r3_img),(r4, r4_img)])
+    # icon = RadioField('Avatar', validators=[DataRequired()],
+    #         choices=[(9000,"Don't Change"),(r1, r1_img),(r2, r2_img),(r3,r3_img),(r4, r4_img)])
             

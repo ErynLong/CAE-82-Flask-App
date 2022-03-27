@@ -5,6 +5,22 @@ from flask import render_template, request, flash, redirect, url_for
 from app.models import User
 from flask_login import login_user, current_user, logout_user, login_required
 
+@auth.route('/landingpage', methods=['GET'])
+def landingpage():
+    form = LoginForm()
+    if request.method=='GET':
+        # #We will do the login Stuff
+        # email = request.form.get('email').lower()   
+        # password = request.form.get('password')
+        # u = User.query.filter_by(email=email).first()
+        # if u and u.check_hashed_password(password):
+        #     #good email and password
+        #     login_user(u)
+            # flash('Welcome to Your Private Journal','success')
+        # return redirect(url_for('social.index')) #good login
+        # flash('Incorrect email/password','danger')
+        # return render_template('login.html.j2',form=form) #bad login
+        return render_template('landingpage.html.j2') #get req
 
 @auth.route('/login', methods=['GET','POST'])
 def login():
@@ -17,9 +33,9 @@ def login():
         if u and u.check_hashed_password(password):
             #good email and password
             login_user(u)
-            flash('Welcome to Fakebook','success')
+            flash('Welcome to Your Private Journal','success')
             return redirect(url_for('social.index')) #good login
-        flash('Incorrect Email password Combo','danger')
+        flash('Incorrect email/password','danger')
         return render_template('login.html.j2',form=form) #bad login
     return render_template('login.html.j2',form=form) #get req
 
@@ -42,8 +58,8 @@ def register():
                 "first_name":form.first_name.data.title(),
                 "last_name":form.last_name.data.title(),
                 "email":form.email.data.lower(),
-                "password":form.password.data,
-                "icon":int(form.icon.data)
+                "password":form.password.data
+                # "icon":int(form.icon.data)
             }
             #create an empty User
             new_user_object = User()
